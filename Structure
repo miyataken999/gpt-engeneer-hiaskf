@@ -1,0 +1,11 @@
+autoscriptest/
+autoscriptest/
+__init__.py
+config.py
+script_executor.py
+script_parser.py
+test_executor.py
+tests/
+test_script_executor.py
+test_script_parser.py
+requirements.txt

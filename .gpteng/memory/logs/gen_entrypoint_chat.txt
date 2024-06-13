@@ -1,0 +1,248 @@
+
+2024-06-13T05:11:10.212272
+================================ System Message ================================
+
+You will get information about a codebase that is currently on disk in the current folder.
+The user will ask you to write a script that runs the code in a specific way.
+You will answer with code blocks that include all the necessary terminal commands.
+Do not install globally. Do not use sudo.
+Do not explain the code, just give the commands.
+Do not use placeholders, use example values (like . for a folder argument) if necessary.
+
+
+================================ Human Message =================================
+
+
+        Make a unix script that
+        a) installs dependencies
+        b) runs all necessary parts of the codebase (in parallel if necessary)
+        
+Information about the codebase:
+
+```
+File: Structure
+1 autoscriptest/
+2 autoscriptest/
+3 __init__.py
+4 config.py
+5 script.py
+6 test.py
+7 utils.py
+8 main.py
+9 requirements.txt
+
+File: autoscriptest/__init__.py
+1 # empty file
+
+File: autoscriptest/config.py
+1 class Config:
+2     def __init__(self, script_path, test_path):
+3         self.script_path = script_path
+4         self.test_path = test_path
+
+File: autoscriptest/script.py
+1 from dataclasses import dataclass
+2 
+3 @dataclass
+4 class Script:
+5     def __init__(self, script_path):
+6         self.script_path = script_path
+7 
+8     def run(self):
+9         # implement script running logic here
+10         print("Running script...")
+
+File: autoscriptest/test.py
+1 from dataclasses import dataclass
+2 
+3 @dataclass
+4 class Test:
+5     def __init__(self, test_path):
+6         self.test_path = test_path
+7 
+8     def run(self):
+9         # implement test running logic here
+10         print("Running test...")
+
+File: autoscriptest/utils.py
+1 def get_script_path():
+2     # implement logic to get script path here
+3     return "path/to/script"
+4 
+5 def get_test_path():
+6     # implement logic to get test path here
+7     return "path/to/test"
+
+File: autoscriptest/main.py
+1 from autoscriptest.config import Config
+2 from autoscriptest.script import Script
+3 from autoscriptest.test import Test
+4 from autoscriptest.utils import get_script_path, get_test_path
+5 
+6 def main():
+7     script_path = get_script_path()
+8     test_path = get_test_path()
+9     config = Config(script_path, test_path)
+10     script = Script(script_path)
+11     test = Test(test_path)
+12     script.run()
+13     test.run()
+14 
+15 if __name__ == "__main__":
+16     main()
+
+File: requirements.txt
+1 dataclasses
+2 pytest
+
+```
+
+================================== Ai Message ==================================
+
+Here is the Unix script that installs dependencies and runs the codebase:
+```
+#!/bin/bash
+
+# Install dependencies
+python -m pip install -r requirements.txt
+
+# Run the codebase
+python autoscriptest/main.py
+```
+Save this script to a file (e.g. `run_codebase.sh`), make it executable with `chmod +x run_codebase.sh`, and then run it with `./run_codebase.sh`.
+
+2024-06-13T05:16:27.083672
+================================ System Message ================================
+
+You will get information about a codebase that is currently on disk in the current folder.
+The user will ask you to write a script that runs the code in a specific way.
+You will answer with code blocks that include all the necessary terminal commands.
+Do not install globally. Do not use sudo.
+Do not explain the code, just give the commands.
+Do not use placeholders, use example values (like . for a folder argument) if necessary.
+
+
+================================ Human Message =================================
+
+
+        Make a unix script that
+        a) installs dependencies
+        b) runs all necessary parts of the codebase (in parallel if necessary)
+        
+Information about the codebase:
+
+```
+File: Structure
+1 autoscriptest/
+2 autoscriptest/
+3 __init__.py
+4 config.py
+5 script_executor.py
+6 script_parser.py
+7 test_executor.py
+8 tests/
+9 test_script_executor.py
+10 test_script_parser.py
+11 requirements.txt
+
+File: autoscriptest/__init__.py
+1 # empty file
+
+File: autoscriptest/config.py
+1 class Config:
+2     def __init__(self, script_dir: str, test_dir: str):
+3         self.script_dir = script_dir
+4         self.test_dir = test_dir
+
+File: autoscriptest/script_executor.py
+1 from dataclasses import dataclass
+2 from typing import List
+3 
+4 @dataclass
+5 class Script:
+6     name: str
+7     commands: List[str]
+8 
+9 class ScriptExecutor:
+10     def __init__(self, config: 'Config'):
+11         self.config = config
+12 
+13     def execute_script(self, script: Script) -> None:
+14         # execute script commands
+15         for command in script.commands:
+16             print(f"Executing command: {command}")
+
+File: autoscriptest/script_parser.py
+1 from typing import List
+2 
+3 class ScriptParser:
+4     def __init__(self, config: 'Config'):
+5         self.config = config
+6 
+7     def parse_script(self, script_file: str) -> 'Script':
+8         # parse script file and return Script object
+9         with open(script_file, 'r') as f:
+10             lines = f.readlines()
+11             commands = [line.strip() for line in lines]
+12             return Script(script_file, commands)
+
+File: autoscriptest/test_executor.py
+1 from unittest.mock import MagicMock
+2 from autoscriptest.script_executor import ScriptExecutor
+3 
+4 class TestExecutor:
+5     def __init__(self, config: 'Config'):
+6         self.config = config
+7 
+8     def test_script(self, script: 'Script') -> None:
+9         executor = ScriptExecutor(self.config)
+10         executor.execute_script(script)
+
+File: tests/test_script_executor.py
+1 import pytest
+2 from autoscriptest.script_executor import ScriptExecutor
+3 from autoscriptest.config import Config
+4 
+5 @pytest.fixture
+6 def config():
+7     return Config("scripts", "tests")
+8 
+9 def test_execute_script(config):
+10     executor = ScriptExecutor(config)
+11     script = Script("test_script", ["command1", "command2"])
+12     executor.execute_script(script)
+
+File: tests/test_script_parser.py
+1 import pytest
+2 from autoscriptest.script_parser import ScriptParser
+3 from autoscriptest.config import Config
+4 
+5 @pytest.fixture
+6 def config():
+7     return Config("scripts", "tests")
+8 
+9 def test_parse_script(config):
+10     parser = ScriptParser(config)
+11     script = parser.parse_script("test_script.txt")
+12     assert script.name == "test_script.txt"
+13     assert script.commands == ["command1", "command2"]
+
+File: requirements.txt
+1 pytest
+2 dataclasses
+
+```
+
+================================== Ai Message ==================================
+
+Here is the Unix script that installs dependencies and runs the necessary parts of the codebase:
+```
+#!/bin/bash
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Run tests in parallel
+pytest -n 2 tests/
+```
+Note: The `-n 2` flag tells pytest to run tests in parallel using 2 processes. You can adjust this number based on your system's resources.
